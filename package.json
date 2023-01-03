@@ -28,7 +28,8 @@
 		"koa-pino-logger": "^4.0.0",
 		"koa-response-time": "^2.1.0",
 		"koa-static": "^5.0.0",
-		"pino": "^8.8.0"
+		"pino": "^8.8.0",
+		"pino-pretty": "^9.1.1"
 	},
 	"devDependencies": {
 		"@types/node": "^18.7.14",
