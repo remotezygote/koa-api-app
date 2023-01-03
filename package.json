@@ -6,7 +6,7 @@
 	"author": "John Bragg",
 	"license": "MIT",
 	"scripts": {
-		"build": "esbuild index.ts --platform=node --external:pg --external:pg-native --bundle --minify --outfile=dist/app.js",
+		"build": "esbuild index.ts --platform=node --external:thread-stream-worker --external:pg --external:pg-native --bundle --minify --outfile=dist/app.js",
 		"postinstall": "yarn build"
 	},
 	"files": [
