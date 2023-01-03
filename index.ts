@@ -14,8 +14,6 @@ import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neu
 
 import logger from './logger'
 
-export { logger, body }
-
 const app = new Koa()
 
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
@@ -126,5 +124,7 @@ export const start = async (port = process.env.PORT || 3000) => {
 
 	return stop
 }
+
+export { logger, body }
 
 export default app
