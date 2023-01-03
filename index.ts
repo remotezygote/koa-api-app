@@ -8,11 +8,13 @@ import responseTime from 'koa-response-time'
 import session from 'koa-generic-session'
 import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
-import body from 'koa-bodyparser'
+import bodyParser from 'koa-bodyparser'
 
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
 import logger from './logger'
+
+const loggerInstance = logger.child({ context: null })
 
 const app = new Koa()
 
@@ -124,7 +126,8 @@ export const start = async (port = process.env.PORT || 3000) => {
 
 	return stop
 }
+const body = () => bodyParser()
 
-export { logger, body }
+export { loggerInstance as logger, body }
 
 export default app
