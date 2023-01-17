@@ -77,9 +77,9 @@ const customLogLevel = res => {
 
 app.use(koaLogger({ logger, customLogLevel }))
 
-const jwksHost = `https://ids.${process.env.DOMAIN}`
-const audience = `https://api.${process.env.DOMAIN}`
-const issuer = `https://ids.${process.env.DOMAIN}/`
+const jwksHost = process.env.AUTH_JWKS_HOST || `https://ids.${process.env.DOMAIN}`
+const audience = process.env.AUTH_AUDIENCE || `https://api.${process.env.DOMAIN}`
+const issuer = process.env.AUTH_ISSUER_HOST || process.env.AUTH_JWKS_HOST || `https://ids.${process.env.DOMAIN}/`
 
 const jwtMiddleware = jwt({
 	secret: jwksRsa.koaJwtSecret({
