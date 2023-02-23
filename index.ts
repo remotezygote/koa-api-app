@@ -81,6 +81,10 @@ const jwksHost = process.env.AUTH_JWKS_HOST || `https://ids.${process.env.DOMAIN
 const audience = process.env.AUTH_AUDIENCE || `https://api.${process.env.DOMAIN}`
 const issuer = process.env.AUTH_ISSUER_HOST || process.env.AUTH_JWKS_HOST || `https://ids.${process.env.DOMAIN}/`
 
+loggerInstance.info(`Using jwksHost: ${jwksHost}`)
+loggerInstance.info(`Using audience: ${audience}`)
+loggerInstance.info(`Using issuer: ${issuer}`)
+
 const jwtMiddleware = jwt({
 	secret: jwksRsa.koaJwtSecret({
 		cache: true,
