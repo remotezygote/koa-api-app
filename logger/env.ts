@@ -1,6 +1,6 @@
 import camelCase from 'lodash.camelcase'
 
-const options = {}
+const options: { [key: string]: string } = {}
 
 // load main pino options
 if (process.env.PINO) {

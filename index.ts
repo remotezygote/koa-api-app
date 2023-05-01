@@ -1,7 +1,7 @@
-import Koa from 'koa'
+import Koa, { Context } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
-import pino from 'pino'
+import pino, { Level, levels } from 'pino'
 import cors from '@koa/cors'
 import etag from 'koa-etag'
 import responseTime from 'koa-response-time'
@@ -13,6 +13,7 @@ import bodyParser from 'koa-bodyparser'
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
 import logger from './logger'
+import { IncomingMessage, Server, ServerResponse } from 'http'
 
 const loggerInstance = logger.child({ context: null })
 
@@ -28,28 +29,28 @@ app.use(responseTime())
 
 export const router = new Router()
 
-export const get = (...args) => router.get(...args)
-export const put = (...args) => router.put(...args)
-export const post = (...args) => router.post(...args)
-export const patch = (...args) => router.patch(...args)
-export const del = (...args) => router.delete(...args)
+export const get = router.get
+export const put = router.put
+export const post = router.post
+export const patch = router.patch
+export const del = router.delete
 
 const exposedRouter = new Router()
 
 export const exposed = {
-	get: (...args) => exposedRouter.get(...args),
-	put: (...args) => exposedRouter.put(...args),
-	post: (...args) => exposedRouter.post(...args),
-	patch: (...args) => exposedRouter.patch(...args),
-	del: (...args) => exposedRouter.delete(...args),
+	get: exposedRouter.get,
+	put: exposedRouter.put,
+	post: exposedRouter.post,
+	patch: exposedRouter.patch,
+	del: exposedRouter.delete,
 }
 
-const healthy = ctx => {
+const healthy = (ctx: Context) => {
 	ctx.status = 200
 	ctx.body = 'ok'
 }
 
-const notHealthy = ctx => {
+const notHealthy = (ctx: Context) => {
 	ctx.body = 'nope'
 	ctx.status = 503
 }
@@ -58,8 +59,8 @@ const healthCheck = getHealthContextHandler({ healthy, notHealthy })
 
 exposed.get('/health', healthCheck)
 
-const healthcheckLogLevel = process.env.HEALTHCHECK_LOG_LEVEL || 'debug'
-const getDefaultLogLevel = () => process.env.PINO_LEVEL || process.env.LOG_LEVEL || 'info'
+const healthcheckLogLevel: Level = process.env.HEALTHCHECK_LOG_LEVEL as Level || 'debug'
+const getDefaultLogLevel: () => Level = () => process.env.PINO_LEVEL as Level || process.env.LOG_LEVEL || 'info'
 let defaultLogLevel = getDefaultLogLevel()
 
 const setDebug = () => { defaultLogLevel = 'debug' }
@@ -68,22 +69,23 @@ process.on('SIGUSR1', setDebug)
 process.on('SIGUSR2', setDefault)
 
 const chindingsSymbol = pino.symbols.chindingsSym
-const customLogLevel = res => {
+const customLogLevel = (res: ServerResponse<IncomingMessage>) => {
 	if (res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
 		return healthcheckLogLevel
 	}
 	return defaultLogLevel
 }
 
-app.use(koaLogger({ logger, customLogLevel }))
+const usedLogger = koaLogger({ logger, customLogLevel })
+app.use(usedLogger)
 
 const jwksHost = process.env.AUTH_JWKS_HOST || `https://ids.${process.env.DOMAIN}`
 const audience = process.env.AUTH_AUDIENCE || `https://api.${process.env.DOMAIN}`
 const issuer = process.env.AUTH_ISSUER_HOST || process.env.AUTH_JWKS_HOST || `https://ids.${process.env.DOMAIN}/`
 
-loggerInstance.info(`Using jwksHost: ${jwksHost}`)
-loggerInstance.info(`Using audience: ${audience}`)
-loggerInstance.info(`Using issuer: ${issuer}`)
+loggerInstance.debug(`Using jwksHost: ${jwksHost}`)
+loggerInstance.debug(`Using audience: ${audience}`)
+loggerInstance.debug(`Using issuer: ${issuer}`)
 
 const jwtMiddleware = jwt({
 	secret: jwksRsa.koaJwtSecret({
@@ -97,7 +99,7 @@ const jwtMiddleware = jwt({
 	algorithms: ['RS256']
 })
 
-let server
+let server: Server
 const closeServers = () => {
 	return new Promise(resolve => {
 		server.close(resolve)
@@ -106,11 +108,12 @@ const closeServers = () => {
 
 const gracePeriodSec = 2 * 1000
 
+let close: Function
 export const stop = async () => {
 	process.off('SIGUSR1', setDebug)
 	process.off('SIGUSR2', setDefault)
 	logger.info(`Stopping HTTP server`)
-	await app.close()
+	await close()
 }
 
 export const start = async (port = process.env.PORT || 3000) => {
@@ -124,7 +127,7 @@ export const start = async (port = process.env.PORT || 3000) => {
 	server.addListener('close', () => logger.debug('HTTP server has shut down'))
 	logger.info(`Started HTTP server on port ${port}`)
 
-	app.close = shutdown(server)
+	close = shutdown(server)
 	
 	addGracefulShutdownHook(gracePeriodSec, closeServers)
 
