@@ -1,7 +1,7 @@
-import Koa from 'koa'
+import Koa, { Context } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
-import pino from 'pino'
+import pino, { LevelWithSilent } from 'pino'
 import cors from '@koa/cors'
 import etag from 'koa-etag'
 import responseTime from 'koa-response-time'
@@ -28,28 +28,28 @@ app.use(responseTime())
 
 export const router = new Router()
 
-export const get = (...args) => router.get(...args)
-export const put = (...args) => router.put(...args)
-export const post = (...args) => router.post(...args)
-export const patch = (...args) => router.patch(...args)
-export const del = (...args) => router.delete(...args)
+export const get = router.get
+export const put = router.put
+export const post = router.post
+export const patch = router.patch
+export const del = router.delete
 
 const exposedRouter = new Router()
 
 export const exposed = {
-	get: (...args) => exposedRouter.get(...args),
-	put: (...args) => exposedRouter.put(...args),
-	post: (...args) => exposedRouter.post(...args),
-	patch: (...args) => exposedRouter.patch(...args),
-	del: (...args) => exposedRouter.delete(...args),
+	get: exposedRouter.get,
+	put: exposedRouter.put,
+	post: exposedRouter.post,
+	patch: exposedRouter.patch,
+	del: exposedRouter.delete,
 }
 
-const healthy = ctx => {
+const healthy = (ctx: Context) => {
 	ctx.status = 200
 	ctx.body = 'ok'
 }
 
-const notHealthy = ctx => {
+const notHealthy = (ctx: Context) => {
 	ctx.body = 'nope'
 	ctx.status = 503
 }
@@ -70,9 +70,9 @@ process.on('SIGUSR2', setDefault)
 const chindingsSymbol = pino.symbols.chindingsSym
 const customLogLevel = res => {
 	if (res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
-		return healthcheckLogLevel
+		return healthcheckLogLevel as LevelWithSilent
 	}
-	return defaultLogLevel
+	return defaultLogLevel as LevelWithSilent
 }
 
 app.use(koaLogger({ logger, customLogLevel }))
