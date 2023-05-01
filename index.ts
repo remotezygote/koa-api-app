@@ -13,6 +13,7 @@ import bodyParser from 'koa-bodyparser'
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
 import logger from './logger'
+import { ServerResponse } from 'http'
 
 const loggerInstance = logger.child({ context: null })
 
@@ -68,8 +69,8 @@ process.on('SIGUSR1', setDebug)
 process.on('SIGUSR2', setDefault)
 
 const chindingsSymbol = pino.symbols.chindingsSym
-const customLogLevel = res => {
-	if (res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
+const customLogLevel = (res: ServerResponse) => {
+	if (res.log && res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
 		return healthcheckLogLevel as LevelWithSilent
 	}
 	return defaultLogLevel as LevelWithSilent
