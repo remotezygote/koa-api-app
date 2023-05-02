@@ -70,6 +70,7 @@ process.on('SIGUSR2', setDefault)
 
 const chindingsSymbol = pino.symbols.chindingsSym
 const customLogLevel = (res: ServerResponse<IncomingMessage>) => {
+	// @ts-ignore
 	if (res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
 		return healthcheckLogLevel
 	}
