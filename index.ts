@@ -1,7 +1,7 @@
 import Koa, { Context } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
-import pino, { Level, levels } from 'pino'
+import pino, { LevelWithSilent, Level } from 'pino'
 import cors from '@koa/cors'
 import etag from 'koa-etag'
 import responseTime from 'koa-response-time'
@@ -73,7 +73,7 @@ const customLogLevel = (res: ServerResponse<IncomingMessage>) => {
 	if (res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
 		return healthcheckLogLevel
 	}
-	return defaultLogLevel
+	return defaultLogLevel as LevelWithSilent
 }
 
 const usedLogger = koaLogger({ logger, customLogLevel })

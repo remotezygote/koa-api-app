@@ -6,6 +6,7 @@
 	"author": "John Bragg",
 	"license": "MIT",
 	"scripts": {
+    "lint": "tsc --project tsconfig.json --noEmit",
 		"build": "esbuild index.ts --platform=node --packages=external --bundle --minify --outfile=dist/app.js",
 		"postinstall": "yarn build"
 	},

@@ -11,12 +11,7 @@
 		"preserveConstEnums": true,
 		"noEmit": true,
 		"outDir": "./dist",
-		"sourceMap": true,
-		"paths": {
-			"@warder/*": [
-				"../../api/lib/*"
-			]
-		}
+		"sourceMap": true
 	},
 	"include": [
 		"./*.ts",
