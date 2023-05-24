@@ -121,10 +121,16 @@ export const start = async (port = process.env.PORT || 3000) => {
 	app
 		.use(exposedRouter.routes())
 		.use(exposedRouter.allowedMethods())
-		.use(jwtMiddleware)
-		.use(router.routes())
+  
+  if (process.env.BYPASS_AUTH !== 'true') {
+		app.use(jwtMiddleware)
+  }
+	
+  app
+    .use(router.routes())
 		.use(router.allowedMethods())
-	server = app.listen(port)
+	
+  server = app.listen(port)
 	server.addListener('close', () => logger.debug('HTTP server has shut down'))
 	logger.info(`Started HTTP server on port ${port}`)
 
