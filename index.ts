@@ -29,20 +29,20 @@ app.use(responseTime())
 
 export const router = new Router()
 
-export const get = router.get
-export const put = router.put
-export const post = router.post
-export const patch = router.patch
-export const del = router.delete
+export const get = router.get.bind(router)
+export const put = router.put.bind(router)
+export const post = router.post.bind(router)
+export const patch = router.patch.bind(router)
+export const del = router.delete.bind(router)
 
 const exposedRouter = new Router()
 
 export const exposed = {
-	get: exposedRouter.get,
-	put: exposedRouter.put,
-	post: exposedRouter.post,
-	patch: exposedRouter.patch,
-	del: exposedRouter.delete,
+	get: exposedRouter.get.bind(exposedRouter),
+	put: exposedRouter.put.bind(exposedRouter),
+	post: exposedRouter.post.bind(exposedRouter),
+	patch: exposedRouter.patch.bind(exposedRouter),
+	del: exposedRouter.delete.bind(exposedRouter),
 }
 
 const healthy = (ctx: Context) => {
