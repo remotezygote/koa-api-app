@@ -1,7 +1,7 @@
 import Koa, { Context } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
-import pino, { Level, levels } from 'pino'
+import pino, { Level, Logger, LoggerOptions, levels } from 'pino'
 import cors from '@koa/cors'
 import etag from 'koa-etag'
 import responseTime from 'koa-response-time'
@@ -70,7 +70,7 @@ process.on('SIGUSR2', setDefault)
 
 const chindingsSymbol = pino.symbols.chindingsSym
 const customLogLevel = (res: ServerResponse<IncomingMessage>) => {
-	if (res.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
+	if (res.req.log[chindingsSymbol].split(',"url":"')[1].replace(/\".+/, '') === '/health') {
 		return healthcheckLogLevel
 	}
 	return defaultLogLevel
