@@ -1,13 +1,29 @@
-# Albatross
+# Koa API App
 
-The constant migrator.
+Use this as the base for your API app. It's very simple:
 
+```javascript
+import app, {
+  exposed,
+  body,
+  get,
+  post,
+  put,
+  del,
+  start,
+} from "@remotezygote/koa-api-app"
+import { ParameterizedContext } from "koa"
 
-All SQL!
+const getEnvironment = async (ctx: ParameterizedContext) => {}
 
+const getCurrentUser = async (ctx: ParameterizedContext) => {
+  const { user } = ctx.state
 
-Have a migrations table. when new migrations are found, simply insert them into the database, with the contents of the migration up/down in text fields. Have a trigger run when new rows are inserted to migrate appropriately. Allow foa lock of migration version via some other table/field, with an update trigger to migrate as needed.
+  ctx.body = user
+  ctx.status = 200
+}
 
-Keep a log of all actions, period, even when rolling up/down, and log the output and any errors.
-
-Push to pubsub queues for output, status, etc. for interface(s). Expose via web sockets for API.
+exposed.get("/env", getEnvironment) // listen at /env with no authentication needed
+get("/me", getCurrentUser) // listen at /me with authenication needed
+put("/me", body(), updateUser) // update current user with authentication needed (also read the body)
+```
