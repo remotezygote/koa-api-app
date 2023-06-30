@@ -1,6 +1,6 @@
 {
   "name": "@remotezygote/koa-api-app",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Koa Base App for APIs",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
