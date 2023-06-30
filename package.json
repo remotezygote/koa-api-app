@@ -1,6 +1,6 @@
 {
   "name": "@remotezygote/koa-api-app",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Koa Base App for APIs",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "tsc --project tsconfig.json --noEmit",
-    "release": "standard-version && git push --follow-tags origin main && npm publish",
+    "release": "standard-version && git push --follow-tags origin main",
     "build": "parcel build",
     "prepare": "yarn build"
   },
