@@ -1,6 +1,6 @@
 {
   "name": "@remotezygote/koa-api-app",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Koa Base App for APIs",
   "main": "./dist/index.js",
   "source": "./src/index.ts",
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "lint": "tsc --project tsconfig.json --noEmit",
-    "release": "standard-version && git push --follow-tags origin main",
+    "release": "standard-version",
     "build": "nanobundle build --tsconfig=./tsconfig.json --platform=node --out-dir=./dist --clean",
     "prepare": "yarn build"
   },
