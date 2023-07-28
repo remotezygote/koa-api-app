@@ -117,20 +117,21 @@ export const stop = async () => {
 	await close()
 }
 
-export const start = async (port = process.env.PORT || 3000) => {
+export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewares = [] }) => {
 	app
 		.use(exposedRouter.routes())
 		.use(exposedRouter.allowedMethods())
-  
-  if (process.env.BYPASS_AUTH !== 'true') {
-		app.use(jwtMiddleware)
-  }
 	
-  app
-    .use(router.routes())
+	if (process.env.BYPASS_AUTH !== 'true') {
+		app.use(jwtMiddleware)
+		afterAuthMiddlewares.forEach(middleware => app.use(middleware))
+	}
+	
+	app
+		.use(router.routes())
 		.use(router.allowedMethods())
 	
-  server = app.listen(port)
+	server = app.listen(port)
 	server.addListener('close', () => logger.debug('HTTP server has shut down'))
 	logger.info(`Started HTTP server on port ${port}`)
 
