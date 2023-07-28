@@ -1,4 +1,4 @@
-import Koa, { Context } from 'koa'
+import Koa, { Context, Middleware } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
 import pino, { LevelWithSilent, Level } from 'pino'
@@ -117,7 +117,11 @@ export const stop = async () => {
 	await close()
 }
 
-export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewares = [] }) => {
+interface StartOptions {
+	afterAuthMiddlewares?: Array<Middleware>
+}
+
+export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewares = [] }: StartOptions) => {
 	app
 		.use(exposedRouter.routes())
 		.use(exposedRouter.allowedMethods())
