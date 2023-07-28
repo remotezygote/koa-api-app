@@ -19,9 +19,11 @@ const loggerInstance = logger.child({ context: null })
 
 const app = new Koa()
 
+const allowedHeaders = ['sentry-trace', 'baggage']
+
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
 app.use(responseTime())
-	.use(cors({ allowHeaders: ['sentry-trace', 'baggage'] }))
+	.use(cors({ allowHeaders: allowedHeaders, exposeHeaders: allowedHeaders }))
 	.use(etag())
 	.use(session({
 		key: 'o:sess',
