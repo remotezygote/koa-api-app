@@ -12,7 +12,7 @@ import bodyParser from 'koa-bodyparser'
 
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
-import logger from './logger'
+import logger from './logger/index.ts'
 import { IncomingMessage, Server, ServerResponse } from 'http'
 
 const loggerInstance = logger.child({ context: null })
@@ -29,7 +29,7 @@ app.use(responseTime())
 		key: 'o:sess',
 	}))
 
-export const router = new Router()
+export const router: Router = new Router()
 
 export const get = router.get.bind(router)
 export const put = router.put.bind(router)
@@ -37,7 +37,7 @@ export const post = router.post.bind(router)
 export const patch = router.patch.bind(router)
 export const del = router.delete.bind(router)
 
-const exposedRouter = new Router()
+const exposedRouter: Router = new Router()
 
 export const exposed = {
 	get: exposedRouter.get.bind(exposedRouter),
