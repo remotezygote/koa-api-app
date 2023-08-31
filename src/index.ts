@@ -75,7 +75,7 @@ const checkHealth: HealthCheck = async () => {
 	for (const check of healthChecks) {
 		const ret = await check()
 		if (!ret) {
-			healthy = !healthy || false
+			healthy = false
 		}
 	}
 	return healthy
