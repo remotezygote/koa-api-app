@@ -45,17 +45,43 @@ export const exposed = {
 	del: exposedRouter.delete.bind(exposedRouter),
 }
 
+const healthyPacket = {
+	status: 'pass'
+}
+
 const healthy = (ctx: Context) => {
 	ctx.status = 200
-	ctx.body = 'ok'
+	ctx.body = healthyPacket
+}
+
+const nothealthyPacket = {
+	status: 'fail'
 }
 
 const notHealthy = (ctx: Context) => {
-	ctx.body = 'nope'
 	ctx.status = 503
+	ctx.body = nothealthyPacket
 }
 
-const healthCheck = getHealthContextHandler({ healthy, notHealthy })
+type HealthCheck = () => Promise<boolean>
+
+const healthChecks: HealthCheck[] = []
+export const addHealthCheck = (check: () => Promise<boolean>) => {
+	healthChecks.push(check)
+}
+
+const checkHealth: HealthCheck = async () => {
+	let healthy = true
+	for (const check of healthChecks) {
+		const ret = await check()
+		if (!ret) {
+			healthy = !healthy || false
+		}
+	}
+	return healthy
+}
+
+const healthCheck = getHealthContextHandler({ healthy, notHealthy, test: checkHealth })
 
 exposed.get('/health', healthCheck)
 
