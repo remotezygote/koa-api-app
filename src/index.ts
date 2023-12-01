@@ -9,6 +9,7 @@ import session from 'koa-generic-session'
 import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
 import bodyParser from 'koa-bodyparser'
+import koaQS from 'koa-qs'
 
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
@@ -18,6 +19,8 @@ import { IncomingMessage, Server, ServerResponse } from 'http'
 const loggerInstance = logger.child({ context: null })
 
 const app = new Koa()
+
+koaQS(app)
 
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
 app.use(responseTime())
