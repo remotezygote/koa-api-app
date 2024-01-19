@@ -173,6 +173,9 @@ export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewa
 }
 const body = () => bodyParser()
 
-export { loggerInstance as logger, body }
+import { paginate } from './paginate/index.ts'
+import { filter } from './filters/index.ts'
+
+export { loggerInstance as logger, body, paginate, filter }
 
 export default app
