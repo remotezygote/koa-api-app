@@ -3,6 +3,6 @@
 import pagination from 'koa-pagination-v2'
 
 export const paginate = ({
-  defaultLimit = process.env.DEFAULT_PAGE_LIMIT || 20,
-  maximumLimit = process.env.MAX_PAGE_LIMIT || 50
+  defaultLimit = parseInt(process.env.DEFAULT_PAGE_LIMIT || '20'),
+  maximumLimit = parseInt(process.env.MAX_PAGE_LIMIT || '50')
 } = {}) => pagination({ defaultLimit, maximumLimit })
