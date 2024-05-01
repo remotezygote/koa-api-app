@@ -175,7 +175,8 @@ const body = () => bodyParser()
 
 import { paginate } from './paginate/index.ts'
 import { filter } from './filters/index.ts'
+import { security } from './security/index.ts'
 
-export { loggerInstance as logger, body, paginate, filter }
+export { loggerInstance as logger, body, paginate, filter, security }
 
 export default app
