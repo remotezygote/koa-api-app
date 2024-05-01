@@ -1,8 +1,8 @@
 type Mechanism = string | Function
 
-const runMechanism = (mechanism: Mechanism, ctx: any, next: Function) => {
+const runMechanism = async (mechanism: Mechanism, ctx: any, next: Function) => {
   if (typeof mechanism === 'function') {
-    const output = mechanism(ctx, next)
+    const output = await mechanism(ctx, next)
     return { output, success: output.success }
   } else if (typeof mechanism === 'string') {
     return {success: true, output: mechanism}
