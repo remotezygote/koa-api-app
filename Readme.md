@@ -31,4 +31,29 @@ put("/me", body(), updateUser) // update current user with authentication needed
 put("/users", paginate(), getUsers) // get users with pagination (ctx.state.paginate)
 put("/users", filter(), getUsers) // get users with filters (ctx.state.filters)
 put("/me", body(), paginate(), filter(), getCertainUsers) // read the body, paginate, and parse filters
+
+start()
+```
+
+## Websockets
+
+```javascript
+import app, {
+  start,
+} from "@remotezygote/koa-api-app"
+import { ParameterizedContext } from "koa"
+
+const getWithWebsocket = async (ctx: ParameterizedContext) => {
+  if (ctx.ws) {
+    const ws = await ctx.ws()
+    ws.send('this is a websocket')
+  }
+
+  ctx.status = 200
+  ctx.body = 'this is not a websocket'
+}
+
+get("/resource", getWithWebsocket) // listen at /me with authenication needed
+
+start()
 ```
