@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.26](https://github.com/remotezygote/koa-api-app/compare/v1.0.25...v1.0.26) (2024-01-22)
+
+### [1.0.25](https://github.com/remotezygote/koa-api-app/compare/v1.0.24...v1.0.25) (2024-01-22)
+
+
+### Bug Fixes
+
+* add default options for paginate ([7287b64](https://github.com/remotezygote/koa-api-app/commit/7287b64a85663c1a88f539b39fceb84c1d7f1fba))
+
+### [1.0.24](https://github.com/remotezygote/koa-api-app/compare/v1.0.23...v1.0.24) (2024-01-19)
+
 ### [1.0.23](https://github.com/remotezygote/koa-api-app/compare/v1.0.21...v1.0.23) (2023-09-11)
 
 ### [1.0.22](https://github.com/remotezygote/koa-api-app/compare/v1.0.21...v1.0.22) (2023-09-11)

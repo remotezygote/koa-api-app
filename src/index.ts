@@ -11,6 +11,8 @@ import jwksRsa from 'jwks-rsa'
 import bodyParser from 'koa-bodyparser'
 import koaQS from 'koa-qs'
 
+const websocket = require('koa-easy-ws')
+
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
 import logger from './logger/index.ts'
@@ -23,6 +25,7 @@ const app = new Koa()
 koaQS(app)
 
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
+app.use(websocket())
 app.use(responseTime())
 	.use(etag())
 	.use(session({
@@ -176,6 +179,9 @@ export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewa
 }
 const body = () => bodyParser()
 
-export { loggerInstance as logger, body }
+import { paginate } from './paginate/index.ts'
+import { filter } from './filters/index.ts'
+
+export { loggerInstance as logger, body, paginate, filter }
 
 export default app
