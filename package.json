@@ -45,7 +45,8 @@
     "lodash.camelcase": "^4.3.0",
     "pino": "^8.8.0",
     "pino-pretty": "^10.0.0",
-    "qs": "^6.11.2"
+    "qs": "^6.11.2",
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "@types/koa": "^2.13.4",
