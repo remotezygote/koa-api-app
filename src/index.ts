@@ -10,6 +10,8 @@ import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
 import bodyParser from 'koa-bodyparser'
 
+const websocket = require('koa-easy-ws')
+
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
 import logger from './logger/index.ts'
@@ -20,6 +22,7 @@ const loggerInstance = logger.child({ context: null })
 const app = new Koa()
 
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
+app.use(websocket())
 app.use(responseTime())
 	.use(etag())
 	.use(session({
