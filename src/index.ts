@@ -10,6 +10,8 @@ import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
 import bodyParser from 'koa-bodyparser'
 import koaQS from 'koa-qs'
+import errorHandler from 'koa-better-error-handler'
+import koa404Handler from 'koa-404-handler'
 
 const websocket = require('koa-easy-ws')
 
@@ -21,6 +23,9 @@ import { IncomingMessage, Server, ServerResponse } from 'http'
 const loggerInstance = logger.child({ context: null })
 
 const app = new Koa()
+app.context.onerror = errorHandler
+app.context.api = true
+app.use(koa404Handler)
 
 koaQS(app)
 
