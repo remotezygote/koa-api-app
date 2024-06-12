@@ -9,6 +9,7 @@ import session from 'koa-generic-session'
 import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
 import bodyParser from 'koa-bodyparser'
+import koaQS from 'koa-qs'
 import errorHandler from 'koa-better-error-handler'
 import koa404Handler from 'koa-404-handler'
 
@@ -25,6 +26,8 @@ const app = new Koa()
 app.context.onerror = errorHandler
 app.context.api = true
 app.use(koa404Handler)
+
+koaQS(app)
 
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
 app.use(websocket())
