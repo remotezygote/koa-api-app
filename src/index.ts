@@ -174,7 +174,8 @@ export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewa
 	
 	server = app.listen(port)
 	server.on('clientError', (error: Error, socket: Duplex) => {
-		logger.error('Client error', error, socket)
+		logger.error(`Client error: ${error.message}`)
+		logger.error(error)
 	})
 	server.addListener('close', () => logger.debug('HTTP server has shut down'))
 	logger.info(`Started HTTP server on port ${port}`)
@@ -191,6 +192,6 @@ import { paginate } from './paginate/index.ts'
 import { filter } from './filters/index.ts'
 import { Duplex } from 'stream'
 
-export { loggerInstance as logger, body, paginate, filter }
+export { loggerInstance as logger, body, paginate, filter, server }
 
 export default app
