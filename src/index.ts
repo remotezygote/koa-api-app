@@ -13,7 +13,7 @@ import bodyParser from 'koa-bodyparser'
 import errorHandler from 'koa-better-error-handler'
 import koa404Handler from 'koa-404-handler'
 
-import { websocket, disableTimeout } from './sockets/index.ts'
+import { websocket } from './sockets/index.ts'
 
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
@@ -30,7 +30,6 @@ app.use(koa404Handler)
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
 
 app.use(websocket())
-app.use(disableTimeout)
 
 app.use(responseTime())
 	.use(etag())
