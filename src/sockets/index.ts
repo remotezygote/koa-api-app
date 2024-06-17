@@ -21,6 +21,3 @@ export const socketErrorHandler = (error: Error, socket: Duplex) => {
   console.warn(`client error:`, error)
   socket.destroy()
 }
-	
-
-
