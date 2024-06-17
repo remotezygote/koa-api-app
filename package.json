@@ -1,6 +1,6 @@
 {
   "name": "@remotezygote/koa-api-app",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Koa Base App for APIs",
   "main": "./dist/index.js",
   "source": "./src/index.ts",
