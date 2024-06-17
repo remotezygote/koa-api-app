@@ -1,3 +1,5 @@
+import './global.d.ts'
+
 import Koa, { Context, Middleware } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
