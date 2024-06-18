@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.36](https://github.com/remotezygote/koa-api-app/compare/v1.0.35...v1.0.36) (2024-06-18)
+
 ### [1.0.35](https://github.com/remotezygote/koa-api-app/compare/v1.0.34...v1.0.35) (2024-06-17)
 
 ### [1.0.34](https://github.com/remotezygote/koa-api-app/compare/v1.0.33...v1.0.34) (2024-06-17)
