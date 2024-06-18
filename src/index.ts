@@ -13,7 +13,7 @@ import bodyParser from 'koa-bodyparser'
 import errorHandler from 'koa-better-error-handler'
 import koa404Handler from 'koa-404-handler'
 
-import { websocket } from './sockets/index.ts'
+import { clientErrorHandler, websocket, disableTimeout } from './sockets/index.ts'
 
 import { addGracefulShutdownHook, getHealthContextHandler, shutdown } from '@neurocode.io/k8s-graceful-shutdown'
 
@@ -28,8 +28,6 @@ app.context.api = true
 app.use(koa404Handler)
 
 app.keys = process.env.APP_KEYS ? process.env.APP_KEYS.split(',') : ['asfsdfs87f6sd8f6sd8f67sdf876', 'sadf86sd8f6s8df6s8d76s87d6fg']
-
-app.use(websocket())
 
 app.use(responseTime())
 	.use(etag())
@@ -173,10 +171,7 @@ export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewa
 		.use(router.allowedMethods())
 	
 	server = app.listen(port)
-	server.on('clientError', (error: Error, socket: Duplex) => {
-		logger.error(`Client error: ${error.message}`)
-		logger.error(error)
-	})
+	server.on('clientError', clientErrorHandler)
 	server.addListener('close', () => logger.debug('HTTP server has shut down'))
 	logger.info(`Started HTTP server on port ${port}`)
 
@@ -190,8 +185,7 @@ const body = () => bodyParser()
 
 import { paginate } from './paginate/index.ts'
 import { filter } from './filters/index.ts'
-import { Duplex } from 'stream'
 
-export { loggerInstance as logger, body, paginate, filter, server }
+export { loggerInstance as logger, body, paginate, filter, server, websocket, disableTimeout }
 
 export default app
