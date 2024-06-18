@@ -8,13 +8,13 @@ const websocketTimeout = process.env.WEBSOCKET_TIMEOUT || 30 * 60 * 1000
 
 export const disableTimeout = async (ctx: any, next: any) => {
   if (ctx.ws) {
-    ctx.log.info('Setting timeout for websocket')
+    ctx.log.debug('Setting timeout for websocket')
     ctx.request.socket.setTimeout(websocketTimeout)
   }
   await next()
 }
 export const clientErrorHandler = 
 (error: Error, socket: Duplex) => {
-		logger.error(`Client error: ${error.message}`)
-		logger.error(error)
+		logger.debug(`Client error: ${error.message}`)
+		logger.debug(error)
 	}
