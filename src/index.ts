@@ -156,7 +156,7 @@ interface StartOptions {
 	afterAuthMiddlewares?: Array<Middleware>
 }
 
-export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewares = [] }: StartOptions) => {
+export const start = async (port = process.env.PORT || 3000, { afterAuthMiddlewares = [] }: StartOptions = {}) => {
 	app
 		.use(exposedRouter.routes())
 		.use(exposedRouter.allowedMethods())
