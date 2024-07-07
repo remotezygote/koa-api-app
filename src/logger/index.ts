@@ -1,4 +1,4 @@
-const pino = require('pino')
+import { pino } from 'pino'
 import options from './env.ts'
 
 const prettyPrint = process.env.PINO_PRETTY === 'true' || process.env.PINO_PRETTY === undefined
