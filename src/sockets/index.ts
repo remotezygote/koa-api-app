@@ -2,7 +2,9 @@ import { Duplex } from 'stream'
 
 import logger from '../logger/index.ts'
 
-export * as websocket from 'koa-easy-ws'
+import websocket from 'koa-easy-ws'
+
+export { websocket }
 
 const websocketTimeout = process.env.WEBSOCKET_TIMEOUT || 30 * 60 * 1000
 
