@@ -32,8 +32,6 @@
     "env-pino": "^1.0.1",
     "jwks-rsa": "^3.0.0",
     "koa": "^2.13.4",
-    "koa-404-handler": "^0.1.0",
-    "koa-better-error-handler": "^11.0.4",
     "koa-bodyparser": "^4.3.0",
     "koa-easy-ws": "^2.1.0",
     "koa-etag": "^4.0.0",
