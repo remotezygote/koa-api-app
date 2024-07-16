@@ -1,4 +1,3 @@
-import './global.d.ts'
 import Koa, { Context, Middleware } from 'koa'
 import Router from '@koa/router'
 import koaLogger from 'koa-pino-logger'
@@ -34,15 +33,16 @@ app.use(responseTime())
 
 export const router: Router = new Router()
 
-export const get = router.get.bind(router)
-export const put = router.put.bind(router)
-export const post = router.post.bind(router)
-export const patch = router.patch.bind(router)
-export const del = router.delete.bind(router)
+export const get: typeof router.get = router.get.bind(router)
+export const put: typeof router.put = router.put.bind(router)
+export const post: typeof router.post = router.post.bind(router)
+export const patch: typeof router.patch = router.patch.bind(router)
+export const del: typeof router.delete = router.delete.bind(router)
 
 const exposedRouter: Router = new Router()
 
-export const exposed = {
+type RouterMethod = typeof router.get | typeof router.put | typeof router.post | typeof router.patch | typeof router.delete
+export const exposed: Record<string, RouterMethod> = {
 	get: exposedRouter.get.bind(exposedRouter),
 	put: exposedRouter.put.bind(exposedRouter),
 	post: exposedRouter.post.bind(exposedRouter),

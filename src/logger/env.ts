@@ -1,6 +1,7 @@
 import camelCase from 'lodash.camelcase'
+import { LoggerOptions } from 'pino'
 
-const options: { [key: string]: string } = {}
+const options: LoggerOptions = {}
 
 // load main pino options
 if (process.env.PINO) {
@@ -18,7 +19,7 @@ Object.keys(process.env).filter(key => key.startsWith('PINO_')).forEach(key => {
 	catch (err) {
 		value = rawValue
 	}
-	options[optionKey] = value
+	options[optionKey as keyof LoggerOptions] = value
 })
 
 export default options
